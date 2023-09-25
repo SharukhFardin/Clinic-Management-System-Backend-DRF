@@ -1,2 +1,2 @@
-# Clinic-Management-System-Backend-DRF
-A clinic management system using DRF and Django with many external useful third party packages.
+# Health-Plus-Demo
+Demo-Like project for the upcoming Health+
