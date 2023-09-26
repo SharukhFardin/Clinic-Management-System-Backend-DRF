@@ -4,7 +4,7 @@ from organization.models import User
 class UserService:
     def create_user(
         self,
-        phone: str,
+        phone_number: str,
         password: str,
         name: str = "",
         email: str = "",
@@ -12,14 +12,14 @@ class UserService:
     ) -> User:
         return User.objects.create_user(
             name=name,
-            phone=phone,
+            phone_number=phone_number,
             password=password,
             email=email,
             is_active=is_active,
         )
 
-    def get_user_by_phone(self, phone: str) -> User:
-        return User.objects.get(phone=phone)
+    def get_user_by_phone(self, phone_number: str) -> User:
+        return User.objects.get(phone=phone_number)
 
     def get_user_by_email(self, email: str) -> User:
         return User.objects.get(email=email)
@@ -29,4 +29,4 @@ class UserService:
             return self.get_user_by_email(email=value)
 
         except User.DoesNotExist:
-            return self.get_user_by_phone(phone=value)
+            return self.get_user_by_phone(phone_number=value)

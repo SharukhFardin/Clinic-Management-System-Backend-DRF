@@ -15,6 +15,8 @@ import uuid
 from core.models import CustomBaseModel
 from .choices import *
 
+from typing import Any
+
 
 class UserManager(BaseUserManager):
     # Manager class for users
@@ -34,7 +36,6 @@ class UserManager(BaseUserManager):
         user = self.create_user(email, password)
         user.is_staff = True
         user.is_superuser = True
-        # user.is_active = True
         user.save(using=self._db)
 
         return user
@@ -46,7 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     uid = models.UUIDField(default=uuid.uuid4, editable=False)
 
     name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, null=False, blank=False)
     phone_number = models.CharField(max_length=20)
     # phone_number = PhoneNumberField(blank=True)
     slug = AutoSlugField(unique=True, populate_from="name")

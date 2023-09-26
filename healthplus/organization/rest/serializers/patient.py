@@ -11,7 +11,7 @@ class PatientRegistrationSerializer(serializers.Serializer):
     uid = serializers.UUIDField(read_only=True, source="patient.uid")
     slug = serializers.SlugField(read_only=True, source="patient.slug")
     name = serializers.CharField(max_length=255)
-    phone_number = PhoneNumberField()
+    phone_number = serializers.CharField(max_length=255)
     email = serializers.EmailField()
     password = serializers.CharField(
         min_length=5,
@@ -27,15 +27,16 @@ class PatientRegistrationSerializer(serializers.Serializer):
 
         # Create User
         user = user_helper.create_user(
-            phone=validated_data.get("phone"),
-            password=validated_data.get("password", str(validated_data["phone"])),
-            first_name=validated_data.get("first_name", ""),
-            last_name=validated_data.get("last_name", ""),
+            phone_number=validated_data.get("phone_number"),
+            password=validated_data.get(
+                "password", str(validated_data["phone_number"])
+            ),
+            name=validated_data.get("name", ""),
             email=validated_data.get("email", ""),
         )
 
         # Set that user as an patient
-        patient = Patient.objects.create(user=user.id)
+        patient = Patient.objects.create(user=user)
 
         return validated_data
 

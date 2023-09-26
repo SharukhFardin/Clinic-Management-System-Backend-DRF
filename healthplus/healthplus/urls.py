@@ -5,7 +5,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from schema_graph.views import Schema
 
 urlpatterns = [
-    path("staff/", admin.site.urls),
+    path("admin/", admin.site.urls),
     # organization app
     path("api", include("organization.rest.urls")),
     # health_support app
