@@ -114,10 +114,10 @@ class Doctor(CustomBaseModel):
     specialty = models.CharField(max_length=50)
     expertise = models.CharField(max_length=50)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    slug = AutoSlugField(unique=True, populate_from="user__name")
+    # slug = AutoSlugField(unique=True, populate_from="user__name")
 
 
 class Patient(CustomBaseModel):
     "Patients in the system"
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    slug = AutoSlugField(unique=True, populate_from="user__name")
+    slug = AutoSlugField(unique=True, blank=True, null=True, populate_from="user__name")

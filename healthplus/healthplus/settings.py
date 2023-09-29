@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "schema_graph",
     "silk",
+    "simple_history",
 ]
 
 MIDDLEWARE = [
@@ -61,6 +62,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "silk.middleware.SilkyMiddleware",
+    "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
 SILKY_PYTHON_PROFILER = True
@@ -167,4 +169,9 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_FILTER_BACKENDS": ["rest_framework.filters.SearchFilter"],
     "SEARCH_PARAM": "q",  # Customize the search parameter if needed
+}
+
+GRAPH_MODELS = {
+    "all_applications": True,
+    "group_models": True,
 }

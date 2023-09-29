@@ -15,7 +15,7 @@ urlpatterns = [
         name="doctor-detail",
     ),
     path(
-        r"/me/doctor/organizations/<uuid:uid>/register",
+        r"/we/<uuid:uid>/doctor/registeration",
         DoctorRegistration.as_view(),
         name="doctor-registration",
     ),
