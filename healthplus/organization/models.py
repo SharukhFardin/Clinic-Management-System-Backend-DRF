@@ -108,16 +108,23 @@ class OrganizationUser(models.Model):
         return f"ID: {self.id}, Org: {self.organization}, User: {self.user}, Role: {self.role}"
 
 
-class Doctor(CustomBaseModel):
+class Doctor(models.Model):
     "Doctors in the system"
+    uid = models.UUIDField(default=uuid.uuid4, editable=False)
     designation = models.CharField(max_length=255)
     specialty = models.CharField(max_length=50)
     expertise = models.CharField(max_length=50)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # slug = AutoSlugField(unique=True, populate_from="user__name")
+    # slug = AutoSlugField(unique=True, blank=True, populate_from="user__name")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
-class Patient(CustomBaseModel):
+class Patient(models.Model):
     "Patients in the system"
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    slug = AutoSlugField(unique=True, blank=True, null=True, populate_from="user__name")
+    uid = models.UUIDField(default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # slug = AutoSlugField(unique=True, blank=True, populate_from="user__name")

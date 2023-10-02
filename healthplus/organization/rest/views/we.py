@@ -7,10 +7,10 @@ from ..serializers.we import OrganizationSerializer, OrganizationUserSerializer
 from organization.rest.permissions import IsOrganizationMember
 
 
-class OrganizationList(generics.ListCreateAPIView):
-    """Create or view list for all the organization doctors for ogranization users"""
+class OrganizationList(generics.ListAPIView):
+    """Create or view list for all the organization"""
 
-    permission_classes = [IsOrganizationMember]
+    permission_classes = []
     serializer_class = OrganizationSerializer
 
 

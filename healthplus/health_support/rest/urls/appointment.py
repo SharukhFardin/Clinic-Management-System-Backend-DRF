@@ -8,7 +8,7 @@ from ..views.appointment import (
 
 urlpatterns = [
     path(
-        r"appointment/doctors/<uuid:uid>",
+        r"appointment/doctors/<uuid:doctor_uid>",
         CreateAppointmentWithDoctorView.as_view(),
         name="create-appointment-with-doctor",
     ),

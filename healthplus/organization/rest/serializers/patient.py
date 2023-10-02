@@ -9,7 +9,7 @@ from phonenumber_field.serializerfields import PhoneNumberField
 
 class PatientRegistrationSerializer(serializers.Serializer):
     uid = serializers.UUIDField(read_only=True, source="patient.uid")
-    slug = serializers.SlugField(read_only=True, source="patient.slug")
+    # slug = serializers.SlugField(read_only=True, source="patient.slug")
     name = serializers.CharField(max_length=255)
     phone_number = serializers.CharField(max_length=255)
     email = serializers.EmailField()
@@ -48,7 +48,6 @@ class PatientSerializer(serializers.ModelSerializer):
         model = Patient
         fields = [
             "uid",
-            "slug",
             "created_at",
             "updated_at",
             "user",

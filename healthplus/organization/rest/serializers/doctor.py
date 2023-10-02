@@ -14,7 +14,6 @@ class DoctorSerializer(serializers.ModelSerializer):
         model = Doctor
         fields = [
             "uid",
-            "slug",
             "created_at",
             "updated_at",
             "user",
@@ -28,7 +27,7 @@ class DoctorRegistrationSerializer(serializers.Serializer):
     """Individual Registration for doctors by providing organization UID"""
 
     uid = serializers.UUIDField(read_only=True, source="patient.uid")
-    slug = serializers.SlugField(read_only=True, source="patient.slug")
+    # slug = serializers.SlugField(read_only=True, source="patient.slug")
     name = serializers.CharField(max_length=255)
     phone_number = PhoneNumberField()
     email = serializers.EmailField()
@@ -50,7 +49,9 @@ class DoctorRegistrationSerializer(serializers.Serializer):
         request = self.context.get("request")
 
         # Extract the organization_uid from the URL's query parameters
-        org_uid = request.query_params.get("uid")
+        # org_uid = request.query_params.get("uid")
+
+        org_uid = self.context["view"].kwargs["org_uid"]
 
         # Fetch the LabTest instance based on the UID
         try:

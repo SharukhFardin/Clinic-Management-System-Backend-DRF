@@ -7,50 +7,61 @@ from organization.rest.serializers.patient import PatientSerializer
 
 
 class CreateAppointmentWithDoctorSerializer(serializers.Serializer):
-    """Patient can create an Appointment for lab test or doctor"""
+    # Patient can create an Appointment for lab test or doctor
 
     uid = serializers.CharField()
     slug = serializers.CharField()
     patient = serializers.UUIDField()
     doctor = serializers.UUIDField()
-    organization = OrganizationSerializer()
+    organization = serializers.UUIDField()
     schedule_start = serializers.DateTimeField()
     schedule_end = serializers.DateTimeField()
     location = serializers.CharField()
     type = serializers.CharField()
     status = serializers.CharField()
     address = serializers.CharField()
-    # parent =
 
     def create(self, validated_data):
         request = self.context.get("request")
         user = request.user
 
-        doctor_uid = self.context["request"].query_params.get("doctor_uid")
+        # doctor_uid = self.context["request"].query_params.get("doctor_uid")
 
-        # Fetch the Doctor and Patient instances based on the UID
+        # Standard way to get doctor UID
+        doctor_uid = self.context["view"].kwargs.get("doctor_uid", None)
+
+        # Fetch the Doctor instances based on the UID
         try:
-            doctor = Doctor.objects.get(uid=doctor_uid)
+            doctor = Doctor.objects.get(uid=doctor)
 
         except Doctor.DoesNotExist:
             raise serializers.ValidationError(
                 "Doctor with the specified UID does not exist."
             )
 
+        try:
+            organization = Doctor.objects.get(uid=organization)
+
+        except Organization.DoesNotExist:
+            raise serializers.ValidationError(
+                "Organization with the specified UID does not exist."
+            )
+
         # Create the Appointment object with doctor, patient, and validated data
         appointment = Appointment.objects.create(
-            doctor=doctor, patient=user, **validated_data
+            doctor=doctor, patient=user, organization=organization, **validated_data
         )
 
         return appointment
 
 
-class CreateAppointmentWithDoctorSerializer_TEST(serializers.ModelSerializer):
-    """Patient can create an Appointment with doctor"""
+"""
+class CreateAppointmentWithDoctorSerializer(serializers.ModelSerializer):
+    # Patient can create an Appointment with doctor
 
     patient = PatientSerializer()
     doctor = DoctorSerializer()
-    organization = OrganizationSerializer()
+    # organization = OrganizationSerializer()
 
     class Meta:
         model = Appointment
@@ -60,8 +71,6 @@ class CreateAppointmentWithDoctorSerializer_TEST(serializers.ModelSerializer):
             "patient",
             "doctor",
             "organization",
-            "created_at",
-            "updated_at",
             "description",
             "schedule_start",
             "schedule_end",
@@ -69,28 +78,20 @@ class CreateAppointmentWithDoctorSerializer_TEST(serializers.ModelSerializer):
             "type",
             "status",
             "address",
-            "payment",
+            "parent",
         ]
-        read_only_fields = []
+        read_only_fields = ['status', ]
 
-    uid = serializers.CharField()
-    slug = serializers.CharField()
-    patient = serializers.UUIDField()
-    doctor = serializers.UUIDField()
-    organization = OrganizationSerializer()
-    schedule_start = serializers.DateTimeField()
-    schedule_end = serializers.DateTimeField()
-    location = serializers.CharField()
-    type = serializers.CharField()
-    status = serializers.CharField()
-    address = serializers.CharField()
-    # parent =
 
     def create(self, validated_data):
+        # Much more works are still left to be done.
         request = self.context.get("request")
         user = request.user
 
-        doctor_uid = self.context["request"].query_params.get("doctor_uid")
+        # doctor_uid = self.context["request"].query_params.get("doctor_uid")
+
+        # Standard way to get doctor UID
+        doctor_uid = self.context["view"].kwargs["doctor_uid"]
 
         # Fetch the Doctor and Patient instances based on the UID
         try:
@@ -100,6 +101,8 @@ class CreateAppointmentWithDoctorSerializer_TEST(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "Doctor with the specified UID does not exist."
             )
+        
+
 
         # Create the Appointment object with doctor, patient, and validated data
         appointment = Appointment.objects.create(
@@ -107,6 +110,7 @@ class CreateAppointmentWithDoctorSerializer_TEST(serializers.ModelSerializer):
         )
 
         return appointment
+"""
 
 
 class CreateAppointmentForLabTestSerializer(serializers.Serializer):
@@ -129,6 +133,8 @@ class CreateAppointmentForLabTestSerializer(serializers.Serializer):
 
         # Extract the labtest_uid from the URL's query parameters
         labtest_uid = request.query_params.get("uid")
+
+        # request.
 
         # Fetch the LabTest instance based on the UID
         try:
